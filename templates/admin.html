@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <p class="eyebrow">Operations Overview</p>
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Total Verifications</p>
+                <p class="stat-value">{{ total }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Valid</p>
+                <p class="stat-value valid">{{ valid }}</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Tampered</p>
+                <p class="stat-value tampered">{{ tampered }}</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Recent Verifications</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>File</th>
+                        <th>Status</th>
+                        <th>Confidence</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in recent %}
+                        <tr>
+                            <td>{{ row['created_at'] }}</td>
+                            <td>{{ row['filename'] }}</td>
+                            <td><span class="table-badge {{ 'valid' if row['status'] == 'VALID' else 'tampered' }}">{{ row['status'] }}</span></td>
+                            <td>{{ row['confidence'] }}%</td>
+                            <td>{{ row['reason'] }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No verifications yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a class="link" href="{{ url_for('index') }}">Back to Upload</a>
+    </div>
+</body>
+</html>

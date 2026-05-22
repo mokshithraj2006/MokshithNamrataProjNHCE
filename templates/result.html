@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <p class="eyebrow">Verification Complete</p>
+            <h1>Verification Result</h1>
+        </div>
+        <div class="card">
+            <p class="status-label">Certificate Status</p>
+            <p class="status-badge {{ 'valid' if status == 'VALID' else 'tampered' }}">{{ status }}</p>
+            <p><strong>Confidence:</strong> {{ confidence }}%</p>
+            <div class="progress">
+                <div class="progress-fill {{ 'valid' if status == 'VALID' else 'tampered' }}" style="width: {{ confidence }}%;"></div>
+            </div>
+            <p><strong>OCR Source:</strong> {{ ocr_source }}</p>
+            <p><strong>SHA-256:</strong> <code>{{ hash_value }}</code></p>
+            <p><strong>Seen Before:</strong> {{ 'Yes' if seen_before else 'No' }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Extracted Fields</h2>
+            <p><strong>Name:</strong> {{ fields.get('name', 'Not found') }}</p>
+            <p><strong>USN:</strong> {{ fields.get('usn', 'Not found') }}</p>
+            <p><strong>CGPA:</strong> {{ fields.get('cgpa', 'Not found') }}</p>
+            <p><strong>Year:</strong> {{ fields.get('year', 'Not found') }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Validation Notes</h2>
+            {% if reasons %}
+                <ul>
+                    {% for reason in reasons %}
+                        <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>All checks passed.</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('index') }}">Verify Another File</a>
+            <a href="{{ url_for('admin') }}">View Admin Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

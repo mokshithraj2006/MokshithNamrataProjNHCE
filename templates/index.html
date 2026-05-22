@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Validator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container center-layout">
+        <div class="hero">
+            <p class="eyebrow">Secure Verification</p>
+            <h1>Certificate Authenticity Validator</h1>
+            <p class="subtitle">Upload a certificate to verify integrity and authenticity.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form class="card upload-card" action="{{ url_for('verify') }}" method="post" enctype="multipart/form-data">
+            <label for="certificate" class="dropzone">
+                <span class="dropzone-title">Drop file here or click to upload</span>
+                <span class="dropzone-subtitle">PDF/JPG/JPEG/PNG, up to 5MB</span>
+            </label>
+            <input id="certificate" type="file" name="certificate" required>
+            <button type="submit">Verify Certificate</button>
+        </form>
+
+        <a class="link" href="{{ url_for('admin') }}">Open Admin Dashboard</a>
+    </div>
+</body>
+</html>
